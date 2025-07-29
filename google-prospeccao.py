@@ -4,7 +4,6 @@ import os
 from tqdm import tqdm
 from dotenv import load_dotenv
 
-# Carrega variáveis do arquivo .env
 load_dotenv()
 
 API_KEY = os.getenv('GOOGLE_MAPS_API_KEY')  
@@ -263,11 +262,9 @@ def salvar_resultados(resultados, nome_arquivo, cidade):
     :param nome_arquivo: Nome do arquivo para salvar os resultados.
     :param cidade: Nome da cidade (não utilizado mais para filtrar).
     """
-    # Removido o filtro por cidade
-    # resultados_filtrados = resultados[resultados['Endereço'].str.contains(cidade, case=False, na=False)]
-    resultados_filtrados = resultados  # Salva todos os resultados
+   
+    resultados_filtrados = resultados  
 
-    # Obtém o caminho da pasta atual do script
     script_path = os.path.dirname(os.path.abspath(__file__))
     caminho_arquivo = os.path.join(script_path, nome_arquivo)
     
@@ -277,17 +274,17 @@ def salvar_resultados(resultados, nome_arquivo, cidade):
         'Telefone': 'TELEFONE',
         'Website': 'SITE'
     })
-    resultados_formatados['NOME DO CONTATO'] = ''  # Coluna vazia para 'NOME DO CONTATO'
+    resultados_formatados['NOME DO CONTATO'] = '' 
     resultados_formatados = resultados_formatados[['REGIAO', 'NOME DA EMPRESA', 'NOME DO CONTATO', 'TELEFONE', 'SITE']]
     resultados_formatados.to_excel(caminho_arquivo, index=False)
 
 # Exemplo de uso
 if __name__ == "__main__":
-    razao_social = "imobiliaria"
+    razao_social = "RAZAO SOCIAL"
     cidade = input("Digite o nome da cidade: ")
     estado = input("Digite o nome do estado: ")
     localizacao = obter_coordenadas(cidade, estado)
-    raio = 23000  # 23 km
+    raio = 23000  
     
     if localizacao:
         resultados = buscar_empresas_por_razao_social(razao_social, localizacao, raio, cidade, estado)
